@@ -1,0 +1,97 @@
+<html>
+<head>
+  <style>
+    :root {
+      /* colors */
+      --white-lilac: #e8eaf6;
+
+      /* offsets */
+      --pad1: 1em;
+
+    }
+  </style>
+</head>
+<body style="display: flex; margin: 0; padding: 0;">
+  <script>
+    window.zzz = {
+      showGrid: false
+    }
+    function alertMe(obj) {
+      window.alert(obj)
+    }
+    function toggleGrid() {
+      let btn = document.getElementById('toggleGridBtn')
+      console.log(btn)
+      if (window.zzz.showGrid) {
+        hideGrid()
+        window.zzz.showGrid = false
+        btn.innerText = 'Show grid'
+      } else {
+        showGrid()
+        window.zzz.showGrid = true
+        btn.innerText = 'Hide grid'
+      }
+
+    }
+    function hideGrid() {
+      let grid = document.getElementById("grid")
+      grid.parentNode.removeChild(grid)
+    }
+    function showGrid() {
+      let ctx = document.getElementById("canvas")
+      let bounds = ctx.getBoundingClientRect()
+
+      let grid = document.createElementNS('http://www.w3.org/2000/svg', "g");
+      grid.setAttribute('id', 'grid')
+
+      let w = bounds.width
+      let verticalLines = w / 20 + 1
+      for (let i = 0; i < verticalLines; i++) {
+        let line = document.createElementNS('http://www.w3.org/2000/svg', "line");
+        line.setAttribute("x1", i * 20)
+        line.setAttribute("x2", i * 20)
+        line.setAttribute("y1", 0)
+        line.setAttribute("y2", '100%')
+        line.style.stroke = 'lightgray'
+        line.style.strokeWidth = 1
+        grid.append(line)
+      }
+
+      let h = bounds.height
+      let horizontalLines = h / 20 + 1
+      for (let i = 0; i < horizontalLines; i++) {
+        let line = document.createElementNS('http://www.w3.org/2000/svg', "line");
+        line.setAttribute("x1", 0)
+        line.setAttribute("x2", '100%')
+        line.setAttribute("y1", i * 20)
+        line.setAttribute("y2", i * 20)
+        line.style.stroke = 'lightgray'
+        line.style.strokeWidth = 1
+        grid.append(line)
+      }
+      ctx.prepend(grid)
+    }
+  </script>
+  <div id="toolbox" style="background-color: var(--white-lilac); padding: var(--pad1)">
+    <button id="toggleGridBtn" onclick="toggleGrid()">Show grid</button>
+    <form>
+      <h2>Triangle</h2>
+      <label>hypotenuse length
+        <input name="h_length"></input>
+      </label>
+      <button onsubmit="alertMe(JSON.stringify(this))">Add</button>
+    </form>
+    <form>
+      <h2>Circle</h2>
+      <label>hypotenuse length
+        <input name="h_length"></input>
+      </label>
+      <button onsubmit="alertMe(JSON.stringify(this))">Add</button>
+    </form>
+  </div>
+  <svg id="canvas" style="flex: 1">
+    <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="yellow" />
+    <polygon points="200,10 250,190 160,210" style="fill:none;stroke:purple;stroke-width:1" />
+  </svg>
+</body>
+</html>
